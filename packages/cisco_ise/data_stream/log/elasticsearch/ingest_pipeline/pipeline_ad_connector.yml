@@ -51,6 +51,7 @@ processors:
       replacement: ""
   - kv:
       field: cisco_ise.log.log_details
+      target_field: cisco_ise.log.log_details_object
       field_split: ', '
       value_split: = 
       ignore_failure: true
@@ -63,34 +64,41 @@ processors:
       timezone: '{{{event.timezone}}}'
       ignore_failure: true
   - convert:
-      field: ConfigVersionId
+      field: cisco_ise.log.log_details_object.ConfigVersionId
       target_field: cisco_ise.log.config_version.id
       type: long
+      ignore_missing: true
       ignore_failure: true
   - rename:
-      field: AD-Admin
+      field: cisco_ise.log.log_details_object.AD-Admin
       target_field: cisco_ise.log.ad.admin
       ignore_missing: true
+      ignore_failure: true
   - rename:
-      field: AD-Domain
+      field: cisco_ise.log.log_details_object.AD-Domain
       target_field: cisco_ise.log.ad.domain.name
       ignore_missing: true
+      ignore_failure: true
   - rename:
-      field: AD-Domain-Controller
+      field: cisco_ise.log.log_details_object.AD-Domain-Controller
       target_field: cisco_ise.log.ad.domain.controller
       ignore_missing: true
+      ignore_failure: true
   - rename:
-      field: AD-Error-Details
+      field: cisco_ise.log.log_details_object.AD-Error-Details
       target_field: cisco_ise.log.ad.error.details
       ignore_missing: true
+      ignore_failure: true
   - rename:
-      field: AD-Forest
+      field: cisco_ise.log.log_details_object.AD-Forest
       target_field: cisco_ise.log.ad.forest
       ignore_missing: true
+      ignore_failure: true
   - rename:
-      field: AD-Hostname
+      field: cisco_ise.log.log_details_object.AD-Hostname
       target_field: cisco_ise.log.ad.hostname
       ignore_missing: true
+      ignore_failure: true
   - append:
       field: related.hosts
       value: '{{{cisco_ise.log.ad.hostname}}}'
@@ -98,10 +106,11 @@ processors:
       allow_duplicates: false
       ignore_failure: true  
   - convert:
-      field: AD-IP-Address
+      field: cisco_ise.log.log_details_object.AD-IP-Address
       target_field: cisco_ise.log.ad.ip
       type: ip
       ignore_missing: true
+      ignore_failure: true
   - append:
       field: related.ip
       value: '{{{cisco_ise.log.ad.ip}}}'
@@ -109,31 +118,37 @@ processors:
       allow_duplicates: false
       ignore_failure: true
   - rename:
-      field: AD-Log-Id
+      field: cisco_ise.log.log_details_object.AD-Log-Id
       target_field: cisco_ise.log.ad.log_id
       ignore_missing: true
+      ignore_failure: true
   - rename:
-      field: AD-Organization-Unit
+      field: cisco_ise.log.log_details_object.AD-Organization-Unit
       target_field: cisco_ise.log.ad.organization_unit
       ignore_missing: true
+      ignore_failure: true
   - rename:
-      field: AD-Site
+      field: cisco_ise.log.log_details_object.AD-Site
       target_field: cisco_ise.log.ad.site
       ignore_missing: true
+      ignore_failure: true
   - rename:
-      field: AD-Log
+      field: cisco_ise.log.log_details_object.AD-Log
       target_field: cisco_ise.log.ad.log
+      ignore_missing: true
       ignore_failure: true
   - rename:
-      field: AD-Srv-Query
+      field: cisco_ise.log.log_details_object.AD-Srv-Query
       target_field: cisco_ise.log.ad.srv.query
+      ignore_missing: true
       ignore_failure: true
   - rename:
-      field: AD-Srv-Record
+      field: cisco_ise.log.log_details_object.AD-Srv-Record
       target_field: cisco_ise.log.ad.srv.record
+      ignore_missing: true
       ignore_failure: true
   - remove:
       field: 
-        -  AD-IP-Address
-        -  ConfigVersionId
+        -  cisco_ise.log.log_details_object.AD-IP-Address
+        -  cisco_ise.log.log_details_object.ConfigVersionId
       ignore_missing: true

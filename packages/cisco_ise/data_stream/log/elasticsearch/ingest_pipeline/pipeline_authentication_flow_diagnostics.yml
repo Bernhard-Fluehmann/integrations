@@ -29,8 +29,9 @@ processors:
       field_split: ', '
       value_split: =
       ignore_failure: true
+      target_field: cisco_ise.log.log_details_object
   - dissect:
-      field: Response
+      field: cisco_ise.log.log_details_object.Response
       pattern: "{%{_tmp.response}}"
       ignore_failure: true
   - kv:
@@ -55,36 +56,36 @@ processors:
         ctx.event.action = ctx?.cisco_ise?.log?.message?.description?.splitOnToken(":")[0]?.toLowerCase();
         ctx.event.category = eventCategory;
   - rename:
-      field: AcsSessionID
+      field: cisco_ise.log.log_details_object.AcsSessionID
       target_field: cisco_ise.log.acs.session.id
       ignore_missing: true
   - rename:
-      field: AuthenticationIdentityStore
+      field: cisco_ise.log.log_details_object.AuthenticationIdentityStore
       target_field: cisco_ise.log.selected.authentication.identity_stores
       ignore_missing: true
   - rename:
-      field: AuthenticationMethod
+      field: cisco_ise.log.log_details_object.AuthenticationMethod
       target_field: cisco_ise.log.authentication.method
       ignore_missing: true
   - rename:
-      field: Calling-Station-ID
+      field: cisco_ise.log.log_details_object.Calling-Station-ID
       target_field: cisco_ise.log.calling_station.id
       ignore_missing: true
   - convert:
-      field: ConfigVersionId
+      field: cisco_ise.log.log_details_object.ConfigVersionId
       target_field: cisco_ise.log.config_version.id
       type: long
       ignore_failure: true
   - rename:
-      field: CPMSessionID
+      field: cisco_ise.log.log_details_object.CPMSessionID
       target_field: cisco_ise.log.cpm.session.id
       ignore_missing: true
   - rename:
-      field: CurrentIDStoreName
+      field: cisco_ise.log.log_details_object.CurrentIDStoreName
       target_field: cisco_ise.log.currentid.store_name
       ignore_missing: true
   - convert:
-      field: DestinationIPAddress
+      field: cisco_ise.log.log_details_object.DestinationIPAddress
       target_field: destination.ip
       type: ip
       ignore_failure: true
@@ -95,7 +96,7 @@ processors:
       allow_duplicates: false
       ignore_failure: true
   - convert:
-      field: NAS-IP-Address
+      field: cisco_ise.log.log_details_object.NAS-IP-Address
       target_field: cisco_ise.log.nas.ip
       type: ip
       ignore_failure: true
@@ -118,7 +119,7 @@ processors:
       allow_duplicates: false
       ignore_failure: true
   - rename:
-      field: SelectedAccessService
+      field: cisco_ise.log.log_details_object.SelectedAccessService
       target_field: cisco_ise.log.selected.access.service
       ignore_missing: true
   - append:
@@ -134,33 +135,24 @@ processors:
       allow_duplicates: false
       ignore_failure: true
   - convert:
-      field: WorkflowCurrentIDStoreIndex
+      field: cisco_ise.log.log_details_object.WorkflowCurrentIDStoreIndex
       target_field: cisco_ise.log.workflow.current_id.store_index
       type: long
+      ignore_missing: true
       ignore_failure: true
   - rename:
-      field: WorkflowIfAuthenticationFailed
+      field: cisco_ise.log.log_details_object.WorkflowIfAuthenticationFailed
       target_field: cisco_ise.log.workflow.if.authentication_failed
       ignore_missing: true
   - rename:
-      field: WorkflowIfProcessError
+      field: cisco_ise.log.log_details_object.WorkflowIfProcessError
       target_field: cisco_ise.log.workflow.if.process_error
       ignore_missing: true
   - rename:
-      field: WorkflowIfUserNotFound
+      field: cisco_ise.log.log_details_object.WorkflowIfUserNotFound
       target_field: cisco_ise.log.workflow.if.user_not_found
       ignore_missing: true
   - rename:
-      field: WorkflowSequenceType
+      field: cisco_ise.log.log_details_object.WorkflowSequenceType
       target_field: cisco_ise.log.workflow.sequence.type
-      ignore_missing: true
-  - remove:
-      field:
-        - ConfigVersionId
-        - DestinationIPAddress
-        - NAS-IP-Address
-        - OriginalUserName
-        - Response
-        - UserName
-        - WorkflowCurrentIDStoreIndex
       ignore_missing: true
