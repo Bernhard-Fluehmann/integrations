@@ -29,6 +29,7 @@ processors:
       ignore_failure: true
   - kv:
       field: cisco_ise.log.log_details
+      target_field: cisco_ise.log.log_details_object
       field_split: ', '
       value_split: =
       ignore_failure: true
@@ -38,12 +39,12 @@ processors:
       source:
         ctx.event.action = ctx?.cisco_ise?.log?.message?.description?.splitOnToken(":")[0]?.toLowerCase();
   - convert:
-      field: ConfigVersionId
+      field: cisco_ise.log.log_details_object.ConfigVersionId
       target_field: cisco_ise.log.config_version.id
-      type: long
+      type: string
       ignore_failure: true
   - rename:
-      field: UserName
+      field: cisco_ise.log.log_details_object.UserName
       target_field: user.name
       ignore_missing: true
   - append:
@@ -53,7 +54,7 @@ processors:
       allow_duplicates: false
       ignore_failure: true
   - convert:
-      field: IpAddress
+      field: cisco_ise.log.log_details_object.IpAddress
       target_field: source.ip
       type: ip
       ignore_failure: true
@@ -64,23 +65,23 @@ processors:
       allow_duplicates: false
       ignore_failure: true
   - rename:
-      field: AuthenticationIdentityStore
+      field: cisco_ise.log.log_details_object.AuthenticationIdentityStore
       target_field: cisco_ise.log.authentication.identity_store
       ignore_missing: true
   - rename:
-      field: PortalName
+      field: cisco_ise.log.log_details_object.PortalName
       target_field: cisco_ise.log.portal.name
       ignore_missing: true
   - rename:
-      field: IdentityGroup
+      field: cisco_ise.log.log_details_object.IdentityGroup
       target_field: cisco_ise.log.identity.group
       ignore_missing: true
   - rename:
-      field: PsnHostName
+      field: cisco_ise.log.log_details_object.PsnHostName
       target_field: cisco_ise.log.psn.hostname
       ignore_missing: true
   - rename:
-      field: EPMacAddress
+      field: cisco_ise.log.log_details_object.EPMacAddress
       target_field: cisco_ise.log.ep.mac.address
       ignore_missing: true
   - gsub:
@@ -92,45 +93,41 @@ processors:
       field: cisco_ise.log.ep.mac_address
       ignore_missing: true
   - rename: 
-      field: EPIdentityGroup
+      field: cisco_ise.log.log_details_object.EPIdentityGroup
       target_field: cisco_ise.log.ep.identity_group
       ignore_missing: true
   - convert: 
-      field: Staticassignment
+      field: cisco_ise.log.log_details_object.Staticassignment
       target_field: cisco_ise.log.static.assignment
       type: boolean
       ignore_failure: true
   - rename: 
-      field: EndPointProfiler
+      field: cisco_ise.log.log_details_object.EndPointProfiler
       target_field: cisco_ise.log.endpoint.profiler
       ignore_missing: true
   - rename: 
-      field: EndPointPolicy
+      field: cisco_ise.log.log_details_object.EndPointPolicy
       target_field: cisco_ise.log.endpoint.policy
       ignore_missing: true
   - rename: 
-      field: DeviceName
+      field: cisco_ise.log.log_details_object.DeviceName
       target_field: cisco_ise.log.device.name
       ignore_missing: true
   - rename: 
-      field: DeviceRegistrationStatus
+      field: cisco_ise.log.log_details_object.DeviceRegistrationStatus
       target_field: cisco_ise.log.device.registration_status
       ignore_missing: true
   - convert: 
-      field: ResponseTime
+      field: cisco_ise.log.log_details_object.ResponseTime
       target_field: cisco_ise.log.response.time
       type: long
       ignore_failure: true
   - rename: 
-      field: EndpointCoA
+      field: cisco_ise.log.log_details_object.EndpointCoA
       target_field: cisco_ise.log.endpoint.coa
       ignore_missing: true
   - remove:
       field:
         - _tmp
-        - ConfigVersionId
-        - IpAddress
         - cisco_ise.log.log_details
-        - ResponseTime
-        - Staticassignment
       ignore_missing: true
