@@ -73,6 +73,13 @@ processors:
       target_field: cisco_ise.log.airespace.wlan.id
       type: long
       ignore_missing: true
+      on_failure:
+        - append:
+            field: error.message
+            value: '{{{_ingest.on_failure_message}}}'
+  - remove:
+      field: cisco_ise.log.cisco_av_pair.coa-push
+      ignore_missing: true
   - rename:
       field: cisco_ise.log.log_details_object.allowEasyWiredSession
       target_field: cisco_ise.log.allow.easy.wired.session
@@ -145,15 +152,18 @@ processors:
         - append:
             field: error.message
             value: '{{{_ingest.on_failure_message}}}'
-  - remove:
-      field: cisco_ise.log.cisco_av_pair.cts-environment-version
-      ignore_missing: true     
+        - remove:
+            field: cisco_ise.log.cisco_av_pair.cts-environment-version
+            ignore_missing: true   
   - convert:
       field: cisco_ise.log.log_details_object.ClientLatency
       target_field: cisco_ise.log.client.latency
       type: long
-      ignore_failure: true
       ignore_missing: true
+      on_failure:
+        - append:
+            field: error.message
+            value: '{{{_ingest.on_failure_message}}}'
   - remove:
       field: cisco_ise.log.log_details_object.ClientLatency
       ignore_missing: true
@@ -209,7 +219,6 @@ processors:
       field: cisco_ise.log.log_details_object.IpAddress
       target_field: source.ip
       type: ip
-      ignore_failure: true
       ignore_missing: true
       on_failure:
         - append:
@@ -234,6 +243,10 @@ processors:
       target_field: cisco_ise.log.is_third_party_device_flow
       type: boolean
       ignore_missing: true
+      on_failure:
+        - append:
+            field: error.message
+            value: '{{{_ingest.on_failure_message}}}'
   - remove:
       field: cisco_ise.log.cisco_av_pair.IsThirdPartyDeviceFlow
       ignore_missing: true
@@ -433,6 +446,7 @@ processors:
       field: cisco_ise.log.log_details_object.DestinationIPAddress
       target_field: destination.ip
       type: ip
+      ignore_missing: true
       on_failure:
         - append:
             field: error.message
