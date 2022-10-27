@@ -38,16 +38,23 @@ processors:
       if: ctx?.cisco_ise?.log?.message?.description != null
       source:
         ctx.event.action = ctx?.cisco_ise?.log?.message?.description?.splitOnToken(":")[0]?.toLowerCase();
-  - convert:
-      field: ConfigVersionId
+  - rename:
+      field: cisco_ise.log.log_details_object.ConfigVersionId
       target_field: cisco_ise.log.config_version.id
-      type: long
       ignore_failure: true
+      ignore_missing: true
   - convert:
       field: cisco_ise.log.log_details_object.Device IP Address
       target_field: client.ip
       type: ip
       ignore_failure: true
+      on_failure:
+        - append:
+            field: error.message
+            value: '{{{_ingest.on_failure_message}}}'
+  - remove:
+      field: cisco_ise.log.cisco_av_pair.Device IP Address
+      ignore_missing: true
   - append:
       field: related.ip
       value: '{{{client.ip}}}' 
@@ -57,6 +64,7 @@ processors:
   - rename:
       field: cisco_ise.log.log_details_object.Protocol
       target_field: network.protocol
+      ignore_failure: true
       ignore_missing: true
   - lowercase:
       field: network.protocol
@@ -76,30 +84,37 @@ processors:
   - rename:
       field: cisco_ise.log.log_details_object.PolicyType
       target_field: cisco_ise.log.policy.type
+      ignore_failure: true
       ignore_missing: true
   - rename:
       field: cisco_ise.log.log_details_object.AcsSessionID
       target_field: cisco_ise.log.acs.session.id
+      ignore_failure: true
       ignore_missing: true
   - rename:
       field: cisco_ise.log.log_details_object.AuthorizationPolicyMatchedRule
       target_field: cisco_ise.log.auth.policy.matched.rule
+      ignore_failure: true
       ignore_missing: true
   - rename:
       field: cisco_ise.log.log_details_object.CurrentIDStoreName
       target_field: cisco_ise.log.currentid.store_name
+      ignore_failure: true
       ignore_missing: true
   - rename:
       field: cisco_ise.log.log_details_object.ISEPolicySetName
       target_field: cisco_ise.log.ise.policy.set_name
+      ignore_failure: true
       ignore_missing: true
   - rename:
       field: cisco_ise.log.log_details_object.IdentityPolicyMatchedRule
       target_field: cisco_ise.log.identity.selection.matched.rule
+      ignore_failure: true
       ignore_missing: true
   - rename:
       field: cisco_ise.log.log_details_object.IdentitySelectionMatchedRule
       target_field: cisco_ise.log.identity.policy.matched.rule
+      ignore_failure: true
       ignore_missing: true
   - append:
       field: user.name
@@ -116,10 +131,12 @@ processors:
   - rename:
       field: cisco_ise.log.log_details_object.SelectedAccessService
       target_field: cisco_ise.log.selected.access.service
+      ignore_failure: true
       ignore_missing: true
   - rename:
       field: cisco_ise.log.log_details_object.SelectedAuthorizationProfiles
       target_field: cisco_ise.log.selected.authorization.profiles
+      ignore_failure: true
       ignore_missing: true
   - append:
       field: user.name
@@ -136,9 +153,5 @@ processors:
   - rename:
       field: cisco_ise.log.log_details_object.CPMSessionID
       target_field: cisco_ise.log.cpm.session.id
-      ignore_missing: true
-  - remove:
-      field:
-        - _tmp
-        - cisco_ise.log.log_details
+      ignore_failure: true
       ignore_missing: true
