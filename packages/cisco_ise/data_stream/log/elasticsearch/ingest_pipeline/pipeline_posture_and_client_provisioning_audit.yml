@@ -38,26 +38,30 @@ processors:
       if: ctx?.cisco_ise?.log?.message?.description != null
       source:
         ctx.event.action = ctx?.cisco_ise?.log?.message?.description?.splitOnToken(":")[0]?.toLowerCase();
-  - convert:
+  - rename:
       field: cisco_ise.log.log_details_object.ConfigVersionId
       target_field: cisco_ise.log.config_version.id
-      type: string
       ignore_failure: true
+      ignore_missing: true
   - rename:
       field: cisco_ise.log.log_details_object.OperationID
       target_field: cisco_ise.log.operation.id
+      ignore_failure: true
       ignore_missing: true
   - rename:
       field: cisco_ise.log.log_details_object.OperationType
       target_field: cisco_ise.log.operation.type
+      ignore_failure: true
       ignore_missing: true
   - rename:
       field: cisco_ise.log.log_details_object.OperationStatus
       target_field: cisco_ise.log.operation.status
+      ignore_failure: true
       ignore_missing: true
   - rename:
       field: cisco_ise.log.log_details_object.AdminName
       target_field: client.user.name
+      ignore_failure: true
       ignore_missing: true
   - append:
       field: related.user
@@ -65,8 +69,3 @@ processors:
       if: ctx?.client?.user?.name != null
       allow_duplicates: false
       ignore_failure: true
-  - remove:
-      field:
-        - _tmp
-        - cisco_ise.log.log_details
-      ignore_missing: true
