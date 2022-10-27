@@ -156,6 +156,7 @@ processors:
       ignore_missing: true
   - remove:
       field: cisco_ise.log.log_details_object.ClientLatency
+      ignore_missing: true
   - rename:
       field: cisco_ise.log.log_details_object.ConfigVersionId
       target_field: cisco_ise.log.config_version.id
