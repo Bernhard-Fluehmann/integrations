@@ -60,7 +60,7 @@ processors:
       field: cisco_ise.log.log_details_object.DestinationPort
       target_field: destination.port
       type: long
-      ignore_failure: true
+      ignore_missing: true
       on_failure:
         - append:
             field: error.message
