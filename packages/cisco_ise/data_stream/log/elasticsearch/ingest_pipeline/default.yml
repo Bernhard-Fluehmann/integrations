@@ -105,11 +105,6 @@ processors:
   - pipeline:
       name: '{{ IngestPipeline "pipeline_identity_stores_diagnostics" }}'
       if: ctx?.cisco_ise?.log?.category?.name == "CISE_Identity_Stores_Diagnostics"
-  # Generic field mapping
-  - pipeline:
-      name: '{{ IngestPipeline "pipeline_field_mapping" }}'
-  
-
   - remove: 
       field:
         - _tmp
