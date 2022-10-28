@@ -51,23 +51,35 @@ processors:
       target_field: cisco_ise.log.config_version.id
       type: long
       ignore_failure: true
+      on_failure:
+        - append:
+            field: error.message
+            value: '{{{_ingest.on_failure_message}}}'
+  - remove:
+      field: cisco_ise.log.log_details_object.ConfigVersionId
+      ignore_missing: true
   - rename:
       field: cisco_ise.log.log_details_object.Details
       target_field: cisco_ise.log.details
+      ignore_failure: true
       ignore_missing: true
   - rename:
       field: cisco_ise.log.log_details_object.AdapterInstanceName
       target_field: cisco_ise.log.adapter_instance.name
+      ignore_failure: true
       ignore_missing: true
   - rename:
       field: cisco_ise.log.log_details_object.AdapterInstanceUuid
       target_field: cisco_ise.log.adapter_instance.uuid
+      ignore_failure: true
       ignore_missing: true
   - rename:
       field: cisco_ise.log.log_details_object.Status
       target_field: cisco_ise.log.status
+      ignore_failure: true
       ignore_missing: true
   - rename:
       field: cisco_ise.log.log_details_object.Connectivity
       target_field: cisco_ise.log.connectivity
+      ignore_failure: true
       ignore_missing: true
