@@ -44,17 +44,26 @@ processors:
       field_split: ', '
       value_split: =
       if: ctx?.cisco_ise?.log?.message?.code == "70011"
-      ignore_failure: true
+      ignore_missing: true
+      on_failure:
+        - append:
+            field: error.message
+            value: '{{{_ingest.on_failure_message}}}'
   - kv: 
       if: ctx?.cisco_ise?.log?.message?.code == "70011"
       field: _tmp.Counter
-      target_field: Counters
+      target_field: cisco_ise.log.log_details_object.Counters
       field_split: ","
       value_split: ":"
-      ignore_failure: true
+      ignore_missing: true
+      on_failure:
+        - append:
+            field: error.message
+            value: '{{{_ingest.on_failure_message}}}'
   - remove:
-      field: OperationCounters
-      if: ctx?.Counters != null
+      field: cisco_ise.log.log_details_object.OperationCounters
+      if: ctx?.cisco_ise?.log?.log_details_object?.Counters != null
+      ignore_missing: true
   - date:
       field: _tmp.timestamp
       target_field: '@timestamp'
@@ -125,6 +134,7 @@ processors:
             value: '{{{_ingest.on_failure_message}}}'
   - remove:
       field: cisco_ise.log.log_details_object.ConfigVersionId
+      ignore_failure: true
       ignore_missing: true
   - rename:
       field: cisco_ise.log.log_details_object.Counters
