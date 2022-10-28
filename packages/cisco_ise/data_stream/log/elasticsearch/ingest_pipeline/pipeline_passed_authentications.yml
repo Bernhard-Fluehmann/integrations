@@ -78,7 +78,7 @@ processors:
             field: error.message
             value: '{{{_ingest.on_failure_message}}}'
   - remove:
-      field: cisco_ise.log.cisco_av_pair.coa-push
+      field: cisco_ise.log.log_details_object.Airespace-Wlan-Id
       ignore_missing: true
   - rename:
       field: cisco_ise.log.log_details_object.allowEasyWiredSession
@@ -225,7 +225,7 @@ processors:
             field: error.message
             value: '{{{_ingest.on_failure_message}}}'
   - remove:
-      field: cisco_ise.log.cisco_av_pair.IpAddress
+      field: cisco_ise.log.log_details_object.IpAddress
       ignore_missing: true
   - append:
       field: related.ip
@@ -248,7 +248,7 @@ processors:
             field: error.message
             value: '{{{_ingest.on_failure_message}}}'
   - remove:
-      field: cisco_ise.log.cisco_av_pair.IsThirdPartyDeviceFlow
+      field: cisco_ise.log.log_details_object.IsThirdPartyDeviceFlow
       ignore_missing: true
   - rename:
       field: cisco_ise.log.log_details_object.ISEPolicySetName
@@ -280,7 +280,7 @@ processors:
             field: error.message
             value: '{{{_ingest.on_failure_message}}}'
   - remove:
-      field: cisco_ise.log.cisco_av_pair.NAS-IP-Address
+      field: cisco_ise.log.log_details_object.NAS-IP-Address
       ignore_missing: true
   - append:
       field: related.ip
@@ -298,7 +298,7 @@ processors:
             field: error.message
             value: '{{{_ingest.on_failure_message}}}'
   - remove:
-      field: cisco_ise.log.cisco_av_pair.NAS-Port
+      field: cisco_ise.log.log_details_object.NAS-Port
       ignore_missing: true      
   - rename:
       field: cisco_ise.log.log_details_object.NAS-Port-Id
@@ -365,7 +365,7 @@ processors:
             field: error.message
             value: '{{{_ingest.on_failure_message}}}'
   - remove:
-      field: cisco_ise.log.cisco_av_pair.RequestLatency
+      field: cisco_ise.log.log_details_object.RequestLatency
       ignore_missing: true
   - convert:
       field: cisco_ise.log.log_details_object.ResponseTime
@@ -377,7 +377,7 @@ processors:
             field: error.message
             value: '{{{_ingest.on_failure_message}}}'
   - remove:
-      field: cisco_ise.log.cisco_av_pair.ResponseTime
+      field: cisco_ise.log.log_details_object.ResponseTime
       ignore_missing: true
   - rename:
       field: cisco_ise.log.log_details_object.SelectedAccessService
@@ -424,7 +424,7 @@ processors:
             field: error.message
             value: '{{{_ingest.on_failure_message}}}'
   - remove:
-      field: cisco_ise.log.cisco_av_pair.TotalAuthenLatency
+      field: cisco_ise.log.log_details_object.TotalAuthenLatency
       ignore_missing: true
   - rename:
       field: cisco_ise.log.log_details_object.UseCase
@@ -452,7 +452,7 @@ processors:
             field: error.message
             value: '{{{_ingest.on_failure_message}}}'
   - remove:
-      field: cisco_ise.log.cisco_av_pair.DestinationIPAddress
+      field: cisco_ise.log.log_details_object.DestinationIPAddress
       ignore_missing: true
   - append:
       field: related.ip
@@ -470,7 +470,7 @@ processors:
             field: error.message
             value: '{{{_ingest.on_failure_message}}}'
   - remove:
-      field: cisco_ise.log.cisco_av_pair.DestinationPort
+      field: cisco_ise.log.log_details_object.DestinationPort
       ignore_missing: true
   - convert:
       field: cisco_ise.log.log_details_object.Device IP Address
@@ -482,7 +482,7 @@ processors:
             field: error.message
             value: '{{{_ingest.on_failure_message}}}'
   - remove:
-      field: cisco_ise.log.cisco_av_pair.Device IP Address
+      field: cisco_ise.log.log_details_object.Device IP Address
       ignore_missing: true
   - append:
       field: related.ip
