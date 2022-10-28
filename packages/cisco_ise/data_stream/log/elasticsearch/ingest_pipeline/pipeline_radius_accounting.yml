@@ -232,7 +232,6 @@ processors:
   - remove:
       field: cisco_ise.log.log_details_object.Airespace-Wlan-Id
       ignore_missing: true
-
   - rename:
       field: cisco_ise.log.log_details_object.AcsSessionID
       target_field: cisco_ise.log.acs.session.id
