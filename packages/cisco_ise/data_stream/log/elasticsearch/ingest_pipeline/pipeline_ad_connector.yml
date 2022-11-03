@@ -63,42 +63,41 @@ processors:
         - yyyy-MM-dd HH:mm:ss.SSSSSS
       timezone: '{{{event.timezone}}}'
       ignore_failure: true
-  - convert:
+  - rename:
       field: cisco_ise.log.log_details_object.ConfigVersionId
       target_field: cisco_ise.log.config_version.id
-      type: long
-      ignore_missing: true
       ignore_failure: true
+      ignore_missing: true
   - rename:
       field: cisco_ise.log.log_details_object.AD-Admin
       target_field: cisco_ise.log.ad.admin
-      ignore_missing: true
       ignore_failure: true
+      ignore_missing: true
   - rename:
       field: cisco_ise.log.log_details_object.AD-Domain
       target_field: cisco_ise.log.ad.domain.name
-      ignore_missing: true
       ignore_failure: true
+      ignore_missing: true
   - rename:
       field: cisco_ise.log.log_details_object.AD-Domain-Controller
       target_field: cisco_ise.log.ad.domain.controller
-      ignore_missing: true
       ignore_failure: true
+      ignore_missing: true
   - rename:
       field: cisco_ise.log.log_details_object.AD-Error-Details
       target_field: cisco_ise.log.ad.error.details
-      ignore_missing: true
       ignore_failure: true
+      ignore_missing: true
   - rename:
       field: cisco_ise.log.log_details_object.AD-Forest
       target_field: cisco_ise.log.ad.forest
-      ignore_missing: true
       ignore_failure: true
+      ignore_missing: true
   - rename:
-      field: cisco_ise.log.log_details_object.AD-Hostname
+      field: AD-Hostname
       target_field: cisco_ise.log.ad.hostname
-      ignore_missing: true
       ignore_failure: true
+      ignore_missing: true
   - append:
       field: related.hosts
       value: '{{{cisco_ise.log.ad.hostname}}}'
@@ -111,6 +110,13 @@ processors:
       type: ip
       ignore_missing: true
       ignore_failure: true
+      on_failure:
+        - append:
+            field: error.message
+            value: "{{ _ingest.on_failure_message }}"
+  - remove:
+      field: cisco_ise.log.log_details_object.AD-IP-Address
+      ignore_missing: true
   - append:
       field: related.ip
       value: '{{{cisco_ise.log.ad.ip}}}'
@@ -120,35 +126,30 @@ processors:
   - rename:
       field: cisco_ise.log.log_details_object.AD-Log-Id
       target_field: cisco_ise.log.ad.log_id
-      ignore_missing: true
       ignore_failure: true
+      ignore_missing: true
   - rename:
       field: cisco_ise.log.log_details_object.AD-Organization-Unit
       target_field: cisco_ise.log.ad.organization_unit
-      ignore_missing: true
       ignore_failure: true
+      ignore_missing: true
   - rename:
       field: cisco_ise.log.log_details_object.AD-Site
       target_field: cisco_ise.log.ad.site
-      ignore_missing: true
       ignore_failure: true
+      ignore_missing: true
   - rename:
       field: cisco_ise.log.log_details_object.AD-Log
       target_field: cisco_ise.log.ad.log
-      ignore_missing: true
       ignore_failure: true
+      ignore_missing: true
   - rename:
       field: cisco_ise.log.log_details_object.AD-Srv-Query
       target_field: cisco_ise.log.ad.srv.query
-      ignore_missing: true
       ignore_failure: true
+      ignore_missing: true
   - rename:
       field: cisco_ise.log.log_details_object.AD-Srv-Record
       target_field: cisco_ise.log.ad.srv.record
-      ignore_missing: true
       ignore_failure: true
-  - remove:
-      field: 
-        -  cisco_ise.log.log_details_object.AD-IP-Address
-        -  cisco_ise.log.log_details_object.ConfigVersionId
       ignore_missing: true

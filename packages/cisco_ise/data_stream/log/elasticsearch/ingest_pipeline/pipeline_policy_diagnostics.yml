@@ -29,6 +29,7 @@ processors:
       ignore_failure: true
   - kv:
       field: cisco_ise.log.log_details
+      target_field: cisco_ise.log.log_details_object
       field_split: ', '
       value_split: =
       ignore_failure: true
@@ -43,7 +44,7 @@ processors:
       type: long
       ignore_failure: true
   - convert:
-      field: Device IP Address
+      field: cisco_ise.log.log_details_object.Device IP Address
       target_field: client.ip
       type: ip
       ignore_failure: true
@@ -54,37 +55,42 @@ processors:
       allow_duplicates: false
       ignore_failure: true
   - rename:
-      field: Protocol
+      field: cisco_ise.log.log_details_object.Protocol
       target_field: network.protocol
       ignore_missing: true
   - lowercase:
       field: network.protocol
       ignore_missing: true
   - date: 
-      field: RequestReceivedTime
+      field: cisco_ise.log.log_details_object.RequestReceivedTime
       target_field: cisco_ise.log.request.received_time
       if: ctx?.RequestReceivedTime != "0"
-      ignore_failure: true
       formats: 
         - UNIX
+      on_failure:
+        - append:
+            field: error.message
+            value: "Processor {{ _ingest.on_failure_processor_type }} with tag {{ _ingest.on_failure_processor_tag }} in pipeline {{ _ingest.on_failure_pipeline }} failed with message {{ _ingest.on_failure_message }}"
+  - remove:
+      field: cisco_ise.log.log_details_object.RequestReceivedTime
   - rename:
-      field: PolicyType
+      field: cisco_ise.log.log_details_object.PolicyType
       target_field: cisco_ise.log.policy.type
       ignore_missing: true
   - rename:
-      field: AcsSessionID
+      field: cisco_ise.log.log_details_object.AcsSessionID
       target_field: cisco_ise.log.acs.session.id
       ignore_missing: true
   - rename:
-      field: AuthorizationPolicyMatchedRule
+      field: cisco_ise.log.log_details_object.AuthorizationPolicyMatchedRule
       target_field: cisco_ise.log.auth.policy.matched.rule
       ignore_missing: true
   - rename:
-      field: CurrentIDStoreName
+      field: cisco_ise.log.log_details_object.CurrentIDStoreName
       target_field: cisco_ise.log.currentid.store_name
       ignore_missing: true
   - rename:
-      field: ISEPolicySetName
+      field: cisco_ise.log.log_details_object.ISEPolicySetName
       target_field: cisco_ise.log.ise.policy.set_name
       ignore_missing: true
   - rename:
@@ -108,11 +114,11 @@ processors:
       allow_duplicates: false
       ignore_failure: true
   - rename:
-      field: SelectedAccessService
+      field: cisco_ise.log.log_details_object.SelectedAccessService
       target_field: cisco_ise.log.selected.access.service
       ignore_missing: true
   - rename:
-      field: SelectedAuthorizationProfiles
+      field: cisco_ise.log.log_details_object.SelectedAuthorizationProfiles
       target_field: cisco_ise.log.selected.authorization.profiles
       ignore_missing: true
   - append:
@@ -128,16 +134,11 @@ processors:
       allow_duplicates: false
       ignore_failure: true
   - rename:
-      field: CPMSessionID
+      field: cisco_ise.log.log_details_object.CPMSessionID
       target_field: cisco_ise.log.cpm.session.id
       ignore_missing: true
   - remove:
       field:
         - _tmp
-        - ConfigVersionId
-        - Device IP Address
-        - OriginalUserName
-        - UserName
-        - RequestReceivedTime
         - cisco_ise.log.log_details
       ignore_missing: true

@@ -13,6 +13,10 @@ processors:
       patterns:
         - "^<%{NUMBER:log.syslog.priority:long}>%{SYSLOGTIMESTAMP:_tmp.timestamp} %{ISO8601_TIMEZONE:_tmp.timezone} %{DATA:host.hostname} %{DATA:cisco_ise.log.category.name} %{DATA:cisco_ise.log.message.id} %{DATA:cisco_ise.log.segment.total:long} %{DATA:cisco_ise.log.segment.number:long} %{GREEDYDATA:message}$"
         - "^<%{NUMBER:log.syslog.priority:long}>%{SYSLOGTIMESTAMP:_tmp.timestamp} %{DATA:host.hostname} %{DATA:cisco_ise.log.category.name} %{DATA:cisco_ise.log.message.id} %{DATA:cisco_ise.log.segment.total:long} %{DATA:cisco_ise.log.segment.number:long} %{GREEDYDATA:message}$"
+      on_failure:
+        - append:
+            field: error.message
+            value: '{{{_ingest.on_failure_message}}}'
   - trim:
       field: message
       ignore_failure: true
@@ -101,13 +105,6 @@ processors:
   - pipeline:
       name: '{{ IngestPipeline "pipeline_identity_stores_diagnostics" }}'
       if: ctx?.cisco_ise?.log?.category?.name == "CISE_Identity_Stores_Diagnostics"
-  - lowercase:
-      field: log.syslog.severity.name
-      ignore_failure: true
-  - set:
-      field: log.level
-      copy_from: log.syslog.severity.name
-      ignore_empty_value: true
   - remove: 
       field:
         - _tmp
