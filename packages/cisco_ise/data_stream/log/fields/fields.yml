@@ -257,7 +257,7 @@
       type: group
       fields:
         - name: id
-          type: long
+          type: keyword
     - name: connectivity
       type: keyword
     - name: cpm

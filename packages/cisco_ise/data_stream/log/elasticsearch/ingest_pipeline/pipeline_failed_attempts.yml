@@ -69,6 +69,7 @@ processors:
       value_split: =
       ignore_failure: true
   - foreach:
+      if: "ctx?.cisco_ise?.log?.log_details_object['acme-av-pair'] != null && ctx?.cisco_ise?.log?.log_details_object['acme-av-pair'] instanceof List"
       field: cisco_ise.log.log_details_object.acme-av-pair
       ignore_missing: true
       processor:
@@ -81,6 +82,16 @@ processors:
             - append:
                 field: error.message
                 value: '{{{_ingest.on_failure_message}}}'
+  - kv:
+      if: "ctx?.cisco_ise?.log?.log_details_object['acme-av-pair'] != null && !(ctx?.cisco_ise?.log?.log_details_object['acme-av-pair'] instanceof List)"
+      field: cisco_ise.log.log_details_object.acme-av-pair
+      target_field: cisco_ise.log.acme-av-pair
+      field_split: ', '
+      value_split: =
+      on_failure:
+        - append:
+            field: error.message
+            value: '{{{_ingest.on_failure_message}}}'
   - remove:
       field: cisco_ise.log.log_details_object.acme-av-pair
       ignore_missing: true
