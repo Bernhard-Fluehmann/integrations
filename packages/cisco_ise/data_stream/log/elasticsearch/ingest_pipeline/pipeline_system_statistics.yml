@@ -27,7 +27,7 @@ processors:
   - kv: 
       if: ctx?.cisco_ise?.log?.message?.code == "70001"
       field: _tmp.SysStatsAcsProcessHealth
-      target_field: SysStatsAcsProcessHealth
+      target_field: cisco_ise.log.log_details_object.SysStatsAcsProcessHealth
       field_split: '; '
       value_split: =
       ignore_failure: true
