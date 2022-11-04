@@ -26,10 +26,10 @@ processors:
       ignore_failure: true
   - kv: 
       field: cisco_ise.log.log_details
+      target_field: cisco_ise.log.log_details_object
       field_split: ', '
       value_split: =
       ignore_failure: true
-      target_field: cisco_ise.log.log_details_object
   - dissect:
       field: cisco_ise.log.log_details_object.Response
       pattern: "{%{_tmp.response}}"
