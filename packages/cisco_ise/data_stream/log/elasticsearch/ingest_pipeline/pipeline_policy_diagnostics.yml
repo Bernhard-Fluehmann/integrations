@@ -72,9 +72,10 @@ processors:
       on_failure:
         - append:
             field: error.message
-            value: "Processor {{ _ingest.on_failure_processor_type }} with tag {{ _ingest.on_failure_processor_tag }} in pipeline {{ _ingest.on_failure_pipeline }} failed with message {{ _ingest.on_failure_message }}"
+            value: "{{ _ingest.on_failure_message }}"
   - remove:
       field: cisco_ise.log.log_details_object.RequestReceivedTime
+      ignore_missing: true
   - rename:
       field: cisco_ise.log.log_details_object.PolicyType
       target_field: cisco_ise.log.policy.type
