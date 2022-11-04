@@ -210,6 +210,7 @@ processors:
             value: '{{{_ingest.on_failure_message}}}'
   - remove:
       field: cisco_ise.log.avpair.disc-cause
+      ignore_missing: true
   - convert:
       field: cisco_ise.log.avpair.disc-cause-ext
       target_field: cisco_ise.log.avpair.disc.cause_ext
@@ -221,6 +222,7 @@ processors:
             value: '{{{_ingest.on_failure_message}}}'
   - remove:
       field: cisco_ise.log.avpair.disc-cause-ext
+      ignore_missing: true
   - convert:
       field: cisco_ise.log.avpair.pre-session-time
       target_field: cisco_ise.log.avpair.pre_session_time
@@ -232,8 +234,9 @@ processors:
             value: '{{{_ingest.on_failure_message}}}'
   - remove:
       field: cisco_ise.log.avpair.pre-session-time
+      ignore_missing: true
   - convert:
-      field: cisco_ise.log.log_details_object.AVPair.elapsed_time
+      field: cisco_ise.log.avpair.elapsed_time
       target_field: cisco_ise.log.avpair.elapsed_time
       type: long
       ignore_missing: true
@@ -244,7 +247,7 @@ processors:
         - remove:
             field: cisco_ise.log.avpair.elapsed_time
   - date: 
-      field: AVPair.stop_time
+      field: cisco_ise.log.avpair.stop_time
       target_field: cisco_ise.log.avpair.stop_time
       if: ctx?.cisco_ise?.log?.avPair?.stop_time != "0"
       formats: 
