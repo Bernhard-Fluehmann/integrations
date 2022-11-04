@@ -89,7 +89,7 @@ processors:
       ignore_failure: true
       ignore_missing: true
   - rename:
-      field: AD-Hostname
+      field: cisco_ise.log.log_details_object.AD-Hostname
       target_field: cisco_ise.log.ad.hostname
       ignore_failure: true
       ignore_missing: true
