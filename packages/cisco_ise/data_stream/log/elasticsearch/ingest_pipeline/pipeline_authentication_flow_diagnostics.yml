@@ -76,11 +76,6 @@ processors:
       ignore_failure: true
       ignore_missing: true
   - rename:
-      field: cisco_ise.log.log_details_object.ConfigVersionId
-      target_field: cisco_ise.log.config_version.id
-      ignore_failure: true
-      ignore_missing: true
-  - rename:
       field: cisco_ise.log.log_details_object.CPMSessionID
       target_field: cisco_ise.log.cpm.session.id
       ignore_failure: true
