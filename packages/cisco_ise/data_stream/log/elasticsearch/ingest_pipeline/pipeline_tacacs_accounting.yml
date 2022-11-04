@@ -198,6 +198,7 @@ processors:
             value: '{{{_ingest.on_failure_message}}}'
   - remove:
       field: cisco_ise.log.avpair.priv-lvl
+      ignore_missing: true
   - convert:
       field: cisco_ise.log.avpair.disc-cause
       target_field: cisco_ise.log.avpair.disc.cause

@@ -131,6 +131,7 @@ processors:
       field:
         - _tmp
         - cisco_ise.log.log_details
+        - cisco_ise.log.log_details_object
       ignore_missing: true
   - remove:
       field: event.original

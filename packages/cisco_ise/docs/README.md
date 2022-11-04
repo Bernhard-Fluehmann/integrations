@@ -67,7 +67,7 @@ An example event for `log` looks as following:
             },
             "cmdset": "[ CmdAV=show mac-address-table \u003ccr\u003e ]",
             "config_version": {
-                "id": "1829"
+                "id": 1829
             },
             "cpm": {
                 "session": {
