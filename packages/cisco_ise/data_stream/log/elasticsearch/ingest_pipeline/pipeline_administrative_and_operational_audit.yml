@@ -3,30 +3,16 @@ processors:
   - set:
       field: event.kind
       value: event
-  - gsub:
-      field: message
-      pattern: ", , "
-      replacement: ", "
-      ignore_missing: true
-      ignore_failure: true      
   - grok:
       field: message
       if: ctx?.cisco_ise?.log?.segment?.number == 0
       patterns: 
-        - "^%{TIMESTAMP_ISO8601:_tmp.timestamp} %{ISO8601_TIMEZONE:event.timezone} %{DATA:event.sequence:long} %{DATA:cisco_ise.log.message.code} %{DATA:log.syslog.severity.name} %{DATA:cisco_ise.log.message.description}, %{GREEDYDATA:cisco_ise.log.log_details},"
-      on_failure:
-        - append:
-            field: error.message
-            value: '{{{_ingest.on_failure_message}}}'
+        - "^%{TIMESTAMP_ISO8601:_tmp.timestamp} %{ISO8601_TIMEZONE:event.timezone} %{DATA:event.sequence:long} %{DATA:cisco_ise.log.message.code} %{DATA:log.syslog.severity.name} %{DATA:cisco_ise.log.message.description}, %{GREEDYDATA:cisco_ise.log.log_details},"  
   - grok:
       field: message
       if: ctx?.cisco_ise?.log?.segment?.number > 0
       patterns: 
         - "^%{GREEDYDATA:cisco_ise.log.log_details},"
-      on_failure:
-        - append:
-            field: error.message
-            value: '{{{_ingest.on_failure_message}}}'
   - grok:
       field: cisco_ise.log.log_details
       if: ctx?.cisco_ise?.log?.message?.code == "60067"
@@ -37,22 +23,21 @@ processors:
       field: cisco_ise.log.log_details
       if: '["61025", "61026"].contains(ctx?.cisco_ise?.log?.message?.code)'
       patterns: 
-        - "ConfigVersionId=%{DATA:cisco_ise.log.log_details_object.ConfigVersionId}, AdminInterface=%{DATA:cisco_ise.log.log_details_object.AdminInterface}, AdminIPAddress=%{DATA:cisco_ise.log.log_details_object.AdminIPAddress}, OperationMessageText=%{DATA:cisco_ise.log.log_details_object.OperationMessageText}, AcsInstance=%{GREEDYDATA:cisco_ise.log.log_details_object.AcsInstance}"
+        - "ConfigVersionId=%{DATA:cisco_ise.log.log_details_object.ConfigVersionId}, AdminInterface=%{DATA:cisco_ise.log.log_details_object.AdminInterface}, AdminIPAddress=%{DATA:cisco_ise.log.log_details_object.AdminIPAddress}, , OperationMessageText=%{DATA:cisco_ise.log.log_details_object.OperationMessageText}, AcsInstance=%{GREEDYDATA:cisco_ise.log.log_details_object.AcsInstance}"
       on_failure:
         - kv:
             field: cisco_ise.log.log_details
             target_field: cisco_ise.log.log_details_object
             field_split: ', '
             value_split: =
-            trim_key: " "
   - grok:
       field: cisco_ise.log.log_details
       if: ctx?.cisco_ise?.log?.message?.code == "52001"
       ignore_failure: true
       patterns: 
-        - "ConfigVersionId=%{DATA:cisco_ise.log.log_details_object.ConfigVersionId}, FailureFlag=%{DATA:cisco_ise.log.log_details_object.FailureFlag}, RequestResponseType=%{DATA:cisco_ise.log.log_details_object.RequestResponseType}, AdminInterface=%{DATA:cisco_ise.log.log_details_object.AdminInterface}, AdminIPAddress=%{DATA:cisco_ise.log.log_details_object.AdminIPAddress}, AdminName=%{DATA:cisco_ise.log.log_details_object.AdminName}, %{GREEDYDATA:tmp.log_detail_52001}"
+        - "ConfigVersionId=%{DATA:cisco_ise.log.log_details_object.ConfigVersionId}, FailureFlag=%{DATA:cisco_ise.log.log_details_object.FailureFlag}, RequestResponseType=%{DATA:cisco_ise.log.log_details_object.RequestResponseType}, AdminInterface=%{DATA:cisco_ise.log.log_details_object.AdminInterface}, AdminIPAddress=%{DATA:cisco_ise.log.log_details_object.AdminIPAddress}, AdminName=%{DATA:cisco_ise.log.log_details_object.AdminName}, %{GREEDYDATA:cisco_ise.log.log_details_object.log_detail}"
   - grok:
-      field: tmp.log_detail_52001
+      field: cisco_ise.log.log_details_object.log_detail
       if: ctx?.cisco_ise?.log?.message?.code == "52001"
       ignore_failure: true
       patterns: 
@@ -61,19 +46,23 @@ processors:
         - "ObjectType=%{DATA:cisco_ise.log.log_details_object.ObjectType}, ObjectName=%{DATA:cisco_ise.log.log_details_object.ObjectName}, Component=%{DATA:cisco_ise.log.log_details_object.Component}, ObjectInternalID=%{GREEDYDATA:cisco_ise.log.log_details_object.ObjectInternalID}"
         - "ConfigChangeData=%{DATA:cisco_ise.log.log_details_object.ConfigChangeData}, ObjectType=%{DATA:cisco_ise.log.log_details_object.ObjectType}, ObjectName=%{GREEDYDATA:cisco_ise.log.log_details_object.ObjectName}"
   - grok:
-      field: tmp.log_detail_52001.ConfigChangeData
+      field: cisco_ise.log.log_details_object.ConfigChangeData
       if: ctx?.cisco_ise?.log?.message?.code == "52001"
       ignore_failure: true
       patterns: 
         - "^%{DATA:_tmp.temp}, Log Severity Level = %{DATA:cisco_ise.log.log_details_object.LogSeverityLevel}\\\\,Local Logging = %{DATA:cisco_ise.log.log_details_object.LocalLogging}\\\\,Assigned Targets = {%{DATA:cisco_ise.log.log_details_object.AssignedTargets}}"
+  - remove:
+      field: cisco_ise.log.log_details_object.ConfigChangeData
+      if: ctx?.cisco_ise?.log?.message?.code == "52001"
+      ignore_missing: true
   - grok:
       field: cisco_ise.log.log_details
       if: ctx?.cisco_ise?.log?.message?.code == "52002"
       ignore_failure: true
       patterns: 
-        - "ConfigVersionId=%{DATA:cisco_ise.log.log_details_object.ConfigVersionId}, AdminInterface=%{DATA:cisco_ise.log.log_details_object.AdminInterface}, AdminIPAddress=%{DATA:cisco_ise.log.log_details_object.AdminIPAddress}, %{GREEDYDATA:tmp.log_detail_52002}"
+        - "ConfigVersionId=%{DATA:cisco_ise.log.log_details_object.ConfigVersionId}, AdminInterface=%{DATA:cisco_ise.log.log_details_object.AdminInterface}, AdminIPAddress=%{DATA:cisco_ise.log.log_details_object.AdminIPAddress}, %{GREEDYDATA:cisco_ise.log.log_details_object.log_detail}"
   - grok:
-      field: tmp.log_detail_52002
+      field: cisco_ise.log.log_details_object.log_detail
       if: ctx?.cisco_ise?.log?.message?.code == "52002"
       ignore_failure: true
       patterns: 
@@ -83,17 +72,25 @@ processors:
       on_failure:
         - kv:
             field: cisco_ise.log.log_details
-            target_field: cisco_ise.log.log_details_object
             field_split: ', '
             value_split: =
-            trim_key: " "
+  - remove:
+      field: cisco_ise.log.log_details_object.log_detail
+      if: ctx?.cisco_ise?.log?.message?.code == "52002"
   - kv:
       field: cisco_ise.log.log_details_object.log_description
       target_field: cisco_ise.log.log_details_object
       field_split: ', '
       trim_key: " "
       value_split: =
-      ignore_failure: true
+      ignore_missing: true
+      on_failure:
+        - append:
+            field: error.message
+            value: '{{{_ingest.on_failure_message}}}'
+  - remove:
+      field: cisco_ise.log.log_details_object.log_description
+      ignore_missing: true
   - grok:
       field: cisco_ise.log.log_details_object.ConfigChangeData
       if: ctx?.cisco_ise?.log?.message?.code == "52002"
