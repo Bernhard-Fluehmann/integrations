@@ -123,6 +123,10 @@ processors:
       field: log.syslog.severity.name
       ignore_failure: true
       ignore_missing: true
+  - set:
+      field: log.level
+      copy_from: log.syslog.severity.name
+      ignore_empty_value: true
   - remove: 
       field:
         - _tmp
