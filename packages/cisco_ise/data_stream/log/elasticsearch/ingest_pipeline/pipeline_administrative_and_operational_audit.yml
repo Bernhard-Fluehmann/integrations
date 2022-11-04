@@ -356,11 +356,6 @@ processors:
       ignore_missing: true
   - rename:
       field: cisco_ise.log.log_details_object.PsnHostName
-      target_field: cisco_ise.log.PsnHostName
-      ignore_failure: true
-      ignore_missing: true
-  - rename:
-      field: cisco_ise.log.log_details_object.PsnHostName
       target_field: cisco_ise.log.psn.hostname
       ignore_failure: true
       ignore_missing: true
