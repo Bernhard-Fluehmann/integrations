@@ -1,8 +1,5 @@
 ---
 processors:
-  - append:
-      field: tags
-      value: "pipeline_administrative_and_operational_audit applied"
   - set:
       field: event.kind
       value: event
