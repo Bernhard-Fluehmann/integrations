@@ -186,7 +186,7 @@ processors:
   - date: 
       field: cisco_ise.log.log_details_object.Event-Timestamp
       target_field: cisco_ise.log.event.timestamp
-      if: ctx?.cisco_ise?.log?.log_details_object['Event-Timestamp'] != "0"
+      if: ctx?.cisco_ise?.log?.log_details_object['Event-Timestamp'] != null
       formats: 
         - UNIX
       on_failure:
