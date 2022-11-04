@@ -249,7 +249,7 @@ processors:
   - date: 
       field: cisco_ise.log.avpair.stop_time
       target_field: cisco_ise.log.avpair.stop_time
-      if: ctx?.cisco_ise?.log?.avPair?.stop_time != "0"
+      if: ctx?.cisco_ise?.log?.avpair?.stop_time != "0"
       formats: 
         - UNIX
       on_failure:
