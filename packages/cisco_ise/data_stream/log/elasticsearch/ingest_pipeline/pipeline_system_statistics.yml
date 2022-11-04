@@ -23,7 +23,7 @@ processors:
       field: cisco_ise.log.log_details
       if: ctx?.cisco_ise?.log?.message?.code == "70001" 
       patterns: 
-        - "^ConfigVersionId=%{DATA:cisco_ise.log.config_version.id}, SysStatsAcsProcessHealth= %{GREEDYDATA:_tmp.SysStatsAcsProcessHealth}"
+        - "^ConfigVersionId=%{INT:cisco_ise.log.log_details_object.ConfigVersionId}, SysStatsAcsProcessHealth= %{GREEDYDATA:_tmp.SysStatsAcsProcessHealth}"
   - kv: 
       if: ctx?.cisco_ise?.log?.message?.code == "70001"
       field: _tmp.SysStatsAcsProcessHealth
