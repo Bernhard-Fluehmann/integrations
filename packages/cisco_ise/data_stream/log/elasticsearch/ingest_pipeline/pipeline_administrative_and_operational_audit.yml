@@ -51,10 +51,6 @@ processors:
       ignore_failure: true
       patterns: 
         - "^%{DATA:_tmp.temp}, Log Severity Level = %{DATA:cisco_ise.log.log_details_object.LogSeverityLevel}\\\\,Local Logging = %{DATA:cisco_ise.log.log_details_object.LocalLogging}\\\\,Assigned Targets = {%{DATA:cisco_ise.log.log_details_object.AssignedTargets}}"
-  - remove:
-      field: cisco_ise.log.log_details_object.ConfigChangeData
-      if: ctx?.cisco_ise?.log?.message?.code == "52001"
-      ignore_missing: true
   - grok:
       field: cisco_ise.log.log_details
       if: ctx?.cisco_ise?.log?.message?.code == "52002"
