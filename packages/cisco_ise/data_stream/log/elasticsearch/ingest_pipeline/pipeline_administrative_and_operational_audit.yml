@@ -236,7 +236,7 @@ processors:
       field: cisco_ise.log.log_details_object.DestinationPort
       ignore_missing: true
   - rename:
-      field: cisco_ise.log.log_details_object.DestinationPort.FailureReason
+      field: cisco_ise.log.log_details_object.FailureReason
       target_field: cisco_ise.log.failure.reason
       ignore_failure: true
       ignore_missing: true
