@@ -275,7 +275,8 @@
             "user": {
                 "full_name": [
                     "Employee1",
-                    "Cisco1"
+                    "Cisco1",
+                    "Employee1 Cisco1"
                 ],
                 "name": "employee1"
             }

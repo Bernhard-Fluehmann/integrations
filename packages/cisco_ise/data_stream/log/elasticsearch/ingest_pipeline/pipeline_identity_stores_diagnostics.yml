@@ -124,11 +124,23 @@ processors:
       if: ctx?.cisco_ise?.log?.log_details_object?.Firstname != null
       allow_duplicates: false
       ignore_failure: true
+  - append:
+      field: related.user
+      value: '{{{cisco_ise.log.log_details_object.Firstname}}}'
+      if: ctx?.cisco_ise?.log?.log_details_object?.Firstname != null
+      allow_duplicates: false
+      ignore_failure: true
   - remove:
       field: cisco_ise.log.log_details_object.Firstname
       ignore_missing: true
   - append:
       field: user.full_name
+      value: '{{{cisco_ise.log.log_details_object.Lastname}}}'
+      if: ctx?.cisco_ise?.log?.log_details_object?.Lastname != null
+      allow_duplicates: false
+      ignore_failure: true
+  - append:
+      field: related.user
       value: '{{{cisco_ise.log.log_details_object.Lastname}}}'
       if: ctx?.cisco_ise?.log?.log_details_object?.Lastname != null
       allow_duplicates: false

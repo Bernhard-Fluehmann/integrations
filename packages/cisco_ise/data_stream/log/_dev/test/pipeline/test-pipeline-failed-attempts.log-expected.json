@@ -730,6 +730,10 @@
             "@timestamp": "2020-04-27T11:11:09.260Z",
             "cisco_ise": {
                 "log": {
+                    "acme-av-pair": {
+                        "audit-session-id": "0a222bc0000000d123e111f7",
+                        "service-type": "Framed"
+                    },
                     "acs": {
                         "session": {
                             "id": "abc12/178657019/44"
