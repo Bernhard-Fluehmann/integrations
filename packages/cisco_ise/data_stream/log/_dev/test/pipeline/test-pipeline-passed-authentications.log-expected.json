@@ -365,6 +365,13 @@
                     "category": {
                         "name": "CISE_Passed_Authentications"
                     },
+                    "cisco_av_pair": {
+                        "coa-push": true,
+                        "cts-device-capability": "env-data-fragment",
+                        "cts-environment-data": "ASAv-vpn",
+                        "cts-environment-version": "1",
+                        "cts-pac-opaque": "****"
+                    },
                     "config_version": {
                         "id": 9
                     },

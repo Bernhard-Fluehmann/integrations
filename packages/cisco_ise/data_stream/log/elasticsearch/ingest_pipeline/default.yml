@@ -22,13 +22,16 @@ processors:
       field: message
       ignore_failure: true
   - convert: 
-      field: host.hostname
+      field: host.ip
       target_field: host.ip
       type: ip
-      ignore_failure: true
-  - remove:
-      field: host.hostname
-      if: ctx?.host?.ip != null
+      ignore_missing: true
+      on_failure:
+        - append:
+            field: error.message
+            value: "{{ _ingest.on_failure_message }}"
+        - remove:
+            field: host.ip
   - append:
       field: related.ip
       value: '{{{host.ip}}}'
@@ -110,7 +113,6 @@ processors:
       field: cisco_ise.log.log_details_object.ConfigVersionId
       target_field: cisco_ise.log.config_version.id
       type: long
-      ignore_failure: true
       ignore_missing: true
       on_failure:
         - append:

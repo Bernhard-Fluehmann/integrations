@@ -433,8 +433,38 @@ processors:
       ignore_missing: true
   - append:
       field: user.name
-      value: '{{{OriginalUserName}}}'
-      if: ctx?.OriginalUserName != null
+      value: '{{{cisco_ise.log.log_details_object.UserName}}}'
+      if: ctx?.cisco_ise?.log?.log_details_object?.UserName != null
+      ignore_failure: true
+      allow_duplicates: false
+  - append:
+      field: related.user
+      value: '{{{cisco_ise.log.log_details_object.UserName}}}'
+      if: ctx?.cisco_ise?.log?.log_details_object?.UserName != null
+      ignore_failure: true
+      allow_duplicates: false
+  - append:
+      field: user.name
+      value: '{{{cisco_ise.log.log_details_object.User-Name}}}'
+      if: ctx?.cisco_ise?.log?.log_details_object['User-Name'] != null
+      allow_duplicates: false
+      ignore_failure: true
+  - append:
+      field: related.user
+      value: '{{{cisco_ise.log.log_details_object.lUser-Name}}}'
+      if: ctx?.cisco_ise?.log?.log_details_object['User-Name'] != null
+      allow_duplicates: false
+      ignore_failure: true
+  - append:
+      field: user.name
+      value: '{{{cisco_ise.log.log_details_object.OriginalUserName}}}'
+      if: ctx?.cisco_ise?.log?.log_details_object?.OriginalUserName != null
+      allow_duplicates: false
+      ignore_failure: true
+  - append:
+      field: related.user
+      value: '{{{cisco_ise.log.log_details_object.OriginalUserName}}}'
+      if: ctx?.cisco_ise?.log?.log_details_object?.OriginalUserName != null
       allow_duplicates: false
       ignore_failure: true
   - convert:
@@ -493,23 +523,3 @@ processors:
   - lowercase:
       field: network.protocol
       ignore_missing: true
-  - append:
-      field: user.name
-      value: '{{{UserName}}}'
-      ignore_failure: true
-      allow_duplicates: false
-  - append:
-      field: user.name
-      value: '{{{User-Name}}}'
-      ignore_failure: true
-      allow_duplicates: false
-  - append:
-      field: related.user
-      value: '{{{UserName}}}'
-      allow_duplicates: false
-      ignore_failure: true
-  - append:
-      field: related.user
-      value: '{{{User-Name}}}'
-      allow_duplicates: false
-      ignore_failure: true

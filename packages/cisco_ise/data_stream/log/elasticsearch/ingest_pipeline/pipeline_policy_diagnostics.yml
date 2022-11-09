@@ -97,23 +97,23 @@ processors:
       target_field: cisco_ise.log.ise.policy.set_name
       ignore_missing: true
   - rename:
-      field: IdentityPolicyMatchedRule
+      field: cisco_ise.log.log_details_object.IdentityPolicyMatchedRule
       target_field: cisco_ise.log.identity.policy.matched.rule
       ignore_missing: true
   - rename:
-      field: IdentitySelectionMatchedRule
+      field: cisco_ise.log.log_details_object.IdentitySelectionMatchedRule
       target_field: cisco_ise.log.identity.selection.matched.rule
       ignore_missing: true
   - append:
       field: user.name
-      value: '{{{OriginalUserName}}}'
-      if: ctx?.OriginalUserName != null
+      value: '{{{cisco_ise.log.log_details_object.OriginalUserName}}}'
+      if: ctx?.cisco_ise?.log?.log_details_object?.OriginalUserName != null
       allow_duplicates: false
       ignore_failure: true
   - append:
       field: related.user
-      value: '{{{OriginalUserName}}}'
-      if: ctx?.OriginalUserName != null
+      value: '{{{cisco_ise.log.log_details_object.OriginalUserName}}}'
+      if: ctx?.cisco_ise?.log?.log_details_object?.OriginalUserName != null
       allow_duplicates: false
       ignore_failure: true
   - rename:
@@ -126,14 +126,14 @@ processors:
       ignore_missing: true
   - append:
       field: user.name
-      value: '{{{UserName}}}'
-      if: ctx?.UserName != null
+      value: '{{{cisco_ise.log.log_details_object.UserName}}}'
+      if: ctx?.cisco_ise?.log?.log_details_object?.UserName != null
       allow_duplicates: false
       ignore_failure: true
   - append:
       field: related.user
-      value: '{{{UserName}}}'
-      if: ctx?.UserName != null
+      value: '{{{cisco_ise.log.log_details_object.UserName}}}'
+      if: ctx?.cisco_ise?.log?.log_details_object?.UserName != null
       allow_duplicates: false
       ignore_failure: true
   - rename:

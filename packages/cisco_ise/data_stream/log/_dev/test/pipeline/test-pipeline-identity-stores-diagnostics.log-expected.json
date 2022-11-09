@@ -266,18 +266,18 @@
                     "cisco-ise-host"
                 ],
                 "user": [
-                    "employee1"
+                    "employee1",
+                    "Employee1",
+                    "Cisco1",
+                    "Employee1 Cisco1"
+
                 ]
             },
             "tags": [
                 "preserve_original_event"
             ],
             "user": {
-                "full_name": [
-                    "Employee1",
-                    "Cisco1",
-                    "Employee1 Cisco1"
-                ],
+                "full_name": "Employee1 Cisco1",
                 "name": "employee1"
             }
         },
