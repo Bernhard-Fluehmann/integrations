@@ -116,6 +116,9 @@ processors:
       if: ctx?.cisco_ise?.log?.log_details_object?.OriginalUserName != null
       allow_duplicates: false
       ignore_failure: true
+  - remove:
+      field: cisco_ise.log.log_details_object.OriginalUserName
+      ignore_missing: true
   - rename:
       field: cisco_ise.log.log_details_object.SelectedAccessService
       target_field: cisco_ise.log.selected.access.service
@@ -136,6 +139,9 @@ processors:
       if: ctx?.cisco_ise?.log?.log_details_object?.UserName != null
       allow_duplicates: false
       ignore_failure: true
+  - remove:
+      field: cisco_ise.log.log_details_object.UserName
+      ignore_missing: true
   - rename:
       field: cisco_ise.log.log_details_object.CPMSessionID
       target_field: cisco_ise.log.cpm.session.id

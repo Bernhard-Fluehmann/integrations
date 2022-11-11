@@ -47,6 +47,9 @@ processors:
                 field: error.message
                 value: '{{{_ingest.on_failure_message}}}'
       ignore_missing: true
+  - remove:
+      field: ctx.cisco_ise.log.log_details_object.AVPair
+      ignore_missing: true
   - kv:
       if: "ctx?.cisco_ise?.log?.log_details_object['cisco-av-pair'] != null && !(ctx?.cisco_ise?.log?.log_details_object['cisco-av-pair'] instanceof List)"
       field : cisco_ise.log.log_details_object.AVPair
@@ -317,6 +320,8 @@ processors:
       field: cisco_ise.log.log_details_object.Response
       pattern: "{%{_tmp.response}}"
       ignore_failure: true
+  - remove:
+      field: cisco_ise.log.log_details_object.Response
   - kv:
       field: _tmp.response
       target_field: cisco_ise.log.response

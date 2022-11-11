@@ -115,7 +115,7 @@ processors:
             field: error.message
             value: '{{{_ingest.on_failure_message}}}'
   - remove:
-      field: cisco_ise.log.log_details_object.DestinationPort
+      field: cisco_ise.log.log_details_object.Staticassignment
       ignore_failure: true
       ignore_missing: true
   - rename: 

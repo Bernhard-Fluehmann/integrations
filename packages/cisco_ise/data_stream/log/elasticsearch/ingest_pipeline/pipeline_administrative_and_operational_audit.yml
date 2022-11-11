@@ -45,6 +45,10 @@ processors:
         - "ConfigChangeData=%{DATA:cisco_ise.log.log_details_object.ConfigChangeData}, ObjectType=%{DATA:cisco_ise.log.log_details_object.ObjectType}, ObjectName=%{DATA:cisco_ise.log.log_details_object.ObjectName}, OperationMessageText=%{GREEDYDATA:cisco_ise.log.log_details_object.OperationMessageText}"
         - "ObjectType=%{DATA:cisco_ise.log.log_details_object.ObjectType}, ObjectName=%{DATA:cisco_ise.log.log_details_object.ObjectName}, Component=%{DATA:cisco_ise.log.log_details_object.Component}, ObjectInternalID=%{GREEDYDATA:cisco_ise.log.log_details_object.ObjectInternalID}"
         - "ConfigChangeData=%{DATA:cisco_ise.log.log_details_object.ConfigChangeData}, ObjectType=%{DATA:cisco_ise.log.log_details_object.ObjectType}, ObjectName=%{GREEDYDATA:cisco_ise.log.log_details_object.ObjectName}"
+  - remove:
+      field: cisco_ise.log.log_details_object.log_detail
+      ignore_missing: true
+      if: ctx?.cisco_ise?.log?.message?.code == "52001"
   - grok:
       field: cisco_ise.log.log_details_object.ConfigChangeData
       if: ctx?.cisco_ise?.log?.message?.code == "52001"
@@ -72,6 +76,7 @@ processors:
             value_split: =
   - remove:
       field: cisco_ise.log.log_details_object.log_detail
+      ignore_missing: true
       if: ctx?.cisco_ise?.log?.message?.code == "52002"
   - kv:
       field: cisco_ise.log.log_details_object.log_description
@@ -268,6 +273,7 @@ processors:
       ignore_missing: true
   - remove:
       field: cisco_ise.log.log_details_object.LogSeverityLevel
+      ignore_missing: true
   - rename:
       field: cisco_ise.log.log_details_object.LogErrorMessage
       target_field: cisco_ise.log.log_error.message
@@ -318,7 +324,7 @@ processors:
       target_field: cisco_ise.log.feed_service.query.from_time
       formats: 
         - ISO8601
-      if: ctx?.cisco_ise?.log?.log_details_object?.FeedServiceQueryFromTime != null ctx?.cisco_ise?.log?.log_details_object?.FeedServiceQueryFromTime != ""
+      if: ctx?.cisco_ise?.log?.log_details_object?.FeedServiceQueryFromTime != null && ctx?.cisco_ise?.log?.log_details_object?.FeedServiceQueryFromTime != ""
       on_failure:
         - append:
             field: error.message

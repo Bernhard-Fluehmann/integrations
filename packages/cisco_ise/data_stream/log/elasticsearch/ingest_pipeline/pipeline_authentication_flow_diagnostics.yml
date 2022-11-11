@@ -34,6 +34,9 @@ processors:
       field: cisco_ise.log.log_details_object.Response
       pattern: "{%{_tmp.response}}"
       ignore_failure: true
+  - remove:
+      field: cisco_ise.log.log_details_object.Response
+      ignore_missing: true
   - kv:
       field: _tmp.response
       target_field: cisco_ise.log.response
@@ -90,7 +93,14 @@ processors:
       target_field: destination.ip
       type: ip
       if: ctx?.cisco_ise?.log?.log_details_object?.DestinationIPAddress != null
-      ignore_failure: true
+      ignore_missing: true
+      on_failure:
+        - append:
+            field: error.message
+            value: '{{{_ingest.on_failure_message}}}'
+  - remove:
+      field: cisco_ise.log.log_details_object.DestinationIPAddress
+      ignore_missing: true
   - append:
       field: related.ip
       value: "{{{destination.ip}}}"
@@ -102,7 +112,13 @@ processors:
       target_field: cisco_ise.log.nas.ip
       type: ip
       if: ctx?.cisco_ise?.log?.log_details_object['NAS-IP-Address'] != null
-      ignore_failure: true
+      on_failure:
+        - append:
+            field: error.message
+            value: '{{{_ingest.on_failure_message}}}'
+  - remove:
+      field: cisco_ise.log.log_details_object.NAS-IP-Address
+      ignore_missing: true
   - append:
       field: related.ip
       value: '{{{cisco_ise.log.nas.ip}}}'
@@ -121,6 +137,9 @@ processors:
       if: ctx?.cisco_ise?.log?.log_details_object?.OriginalUserName != null
       allow_duplicates: false
       ignore_failure: true
+  - remove:
+      field: cisco_ise.log.log_details_object.OriginalUserName
+      ignore_missing: true
   - append:
       field: user.name
       value: '{{{cisco_ise.log.log_details_object.UserName}}}'
@@ -133,6 +152,9 @@ processors:
       if: ctx?.cisco_ise?.log?.log_details_object?.UserName != null
       allow_duplicates: false
       ignore_failure: true
+  - remove:
+      field: cisco_ise.log.log_details_object.UserName
+      ignore_missing: true
   - rename:
       field: cisco_ise.log.log_details_object.SelectedAccessService
       target_field: cisco_ise.log.selected.access.service
@@ -144,6 +166,13 @@ processors:
       type: long
       if: ctx?.cisco_ise?.log?.log_details_object?.WorkflowCurrentIDStoreIndex != null
       ignore_failure: true
+      on_failure:
+        - append:
+            field: error.message
+            value: '{{{_ingest.on_failure_message}}}'
+  - remove:
+      field: cisco_ise.log.log_details_object.WorkflowCurrentIDStoreIndex
+      ignore_missing: true
   - rename:
       field: cisco_ise.log.log_details_object.WorkflowIfAuthenticationFailed
       target_field: cisco_ise.log.workflow.if.authentication_failed

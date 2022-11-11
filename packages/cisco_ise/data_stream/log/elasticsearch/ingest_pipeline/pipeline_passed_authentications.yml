@@ -58,6 +58,9 @@ processors:
       field: cisco_ise.log.log_details_object.Response
       pattern: "{%{_tmp.response}}"
       ignore_failure: true
+  - remove:
+      field: cisco_ise.log.log_details_object.Response
+      ignore_missing: true
   - kv:
       field: _tmp.response
       target_field: cisco_ise.log.response
@@ -443,6 +446,9 @@ processors:
       if: ctx?.cisco_ise?.log?.log_details_object?.UserName != null
       ignore_failure: true
       allow_duplicates: false
+  - remove:
+      field: cisco_ise.log.log_details_object.UserName
+      ignore_missing: true
   - append:
       field: user.name
       value: '{{{cisco_ise.log.log_details_object.User-Name}}}'
@@ -455,6 +461,9 @@ processors:
       if: ctx?.cisco_ise?.log?.log_details_object['User-Name'] != null
       allow_duplicates: false
       ignore_failure: true
+  - remove:
+      field: cisco_ise.log.log_details_object.User-Name
+      ignore_missing: true
   - append:
       field: user.name
       value: '{{{cisco_ise.log.log_details_object.OriginalUserName}}}'
@@ -467,6 +476,9 @@ processors:
       if: ctx?.cisco_ise?.log?.log_details_object?.OriginalUserName != null
       allow_duplicates: false
       ignore_failure: true
+  - remove:
+      field: cisco_ise.log.log_details_object.OriginalUserName
+      ignore_missing: true
   - convert:
       field: cisco_ise.log.log_details_object.DestinationIPAddress
       target_field: destination.ip
