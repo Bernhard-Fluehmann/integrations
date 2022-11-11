@@ -22,16 +22,14 @@ processors:
       field: message
       ignore_failure: true
   - convert: 
-      field: host.ip
+      field: host.hostname
       target_field: host.ip
       type: ip
+      ignore_failure: true
       ignore_missing: true
-      on_failure:
-        - append:
-            field: error.message
-            value: "{{ _ingest.on_failure_message }}"
-        - remove:
-            field: host.ip
+  - remove:
+      field: host.hostname
+      if: ctx?.host?.ip != null
   - append:
       field: related.ip
       value: '{{{host.ip}}}'
