@@ -123,6 +123,9 @@ processors:
       separator: ','
       if: ctx?.cisco_ise?.log?.message?.code == "52001"
       ignore_failure: true
+  - remove:
+      field: cisco_ise.log.log_details_object.AssignedTargets
+      ignore_missing: true
   - date:
       field: _tmp.timestamp
       target_field: '@timestamp'
@@ -263,6 +266,8 @@ processors:
       if: ctx?.log?.syslog?.severity?.name == null
       ignore_failure: true
       ignore_missing: true
+  - remove:
+      field: cisco_ise.log.log_details_object.LogSeverityLevel
   - rename:
       field: cisco_ise.log.log_details_object.LogErrorMessage
       target_field: cisco_ise.log.log_error.message
@@ -300,15 +305,27 @@ processors:
       target_field: cisco_ise.log.feed_service.query.to_time
       formats: 
         - ISO8601
-      if: ctx?.cisco_ise?.log?.log_details_object?.FeedServiceQueryToTime != null
-      ignore_failure: true
+      if: ctx?.cisco_ise?.log?.log_details_object?.FeedServiceQueryToTime != null && ctx?.cisco_ise?.log?.log_details_object?.FeedServiceQueryToTime != ""
+      on_failure:
+        - append:
+            field: error.message
+            value: "{{ _ingest.on_failure_message }}"
+  - remove:
+      field: cisco_ise.log.log_details_object.FeedServiceQueryToTime
+      ignore_missing: true
   - date:
       field: cisco_ise.log.log_details_object.FeedServiceQueryFromTime
       target_field: cisco_ise.log.feed_service.query.from_time
       formats: 
         - ISO8601
-      if: ctx?.cisco_ise?.log?.log_details_object?.FeedServiceQueryFromTime != null
-      ignore_failure: true
+      if: ctx?.cisco_ise?.log?.log_details_object?.FeedServiceQueryFromTime != null ctx?.cisco_ise?.log?.log_details_object?.FeedServiceQueryFromTime != ""
+      on_failure:
+        - append:
+            field: error.message
+            value: "{{ _ingest.on_failure_message }}"
+  - remove:
+      field: cisco_ise.log.log_details_object.FeedServiceQueryFromTime
+      ignore_missing: true
   - rename:
       field: cisco_ise.log.log_details_object.IdentityGroup
       target_field: cisco_ise.log.identity.group
@@ -375,6 +392,9 @@ processors:
         - append:
             field: error.message
             value: "{{ _ingest.on_failure_message }}"
+  - remove:
+      field: cisco_ise.log.log_details_object.ResponseTime
+      ignore_missing: true
   - rename:
       field: cisco_ise.log.log_details_object.UserName
       target_field: user.name
