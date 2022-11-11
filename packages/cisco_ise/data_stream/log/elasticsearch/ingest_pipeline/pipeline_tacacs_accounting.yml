@@ -52,7 +52,7 @@ processors:
       ignore_missing: true
   - kv:
       if: "ctx?.cisco_ise?.log?.log_details_object['cisco-av-pair'] != null && !(ctx?.cisco_ise?.log?.log_details_object['cisco-av-pair'] instanceof List)"
-      field : cisco_ise.log.log_details_object.AVPair
+      field : cisco_ise.log.log_details_object.cisco-av-pair
       target_field: cisco_ise.log.avpair
       field_split: ', '
       value_split: =
@@ -61,6 +61,9 @@ processors:
         - append:
             field: error.message
             value: '{{{_ingest.on_failure_message}}}'
+  - remove:
+      field: ctx.cisco_ise.log.log_details_object.cisco-av-pair
+      ignore_missing: true
   - script:
       lang: painless
       if: ctx?.cisco_ise?.log?.message?.description != null
