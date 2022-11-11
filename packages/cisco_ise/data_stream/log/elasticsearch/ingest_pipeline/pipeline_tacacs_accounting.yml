@@ -34,7 +34,7 @@ processors:
       value_split: =
       ignore_failure: true
   - foreach:
-      if: "ctx?.cisco_ise?.log?.log_details_object['AVPair'] != null && ctx?.cisco_ise?.log?.log_details_object['AVPair'] instanceof List"
+      if: "ctx?.cisco_ise?.log?.log_details_object.AVPair != null && ctx?.cisco_ise?.log?.log_details_object.AVPair instanceof List"
       field: cisco_ise.log.log_details_object.AVPair
       processor:
         kv:
@@ -48,7 +48,7 @@ processors:
                 value: '{{{_ingest.on_failure_message}}}'
       ignore_missing: true
   - remove:
-      field: ctx.cisco_ise.log.log_details_object.AVPair
+      field: cisco_ise.log.log_details_object.AVPair
       ignore_missing: true
   - kv:
       if: "ctx?.cisco_ise?.log?.log_details_object['cisco-av-pair'] != null && !(ctx?.cisco_ise?.log?.log_details_object['cisco-av-pair'] instanceof List)"
@@ -62,7 +62,7 @@ processors:
             field: error.message
             value: '{{{_ingest.on_failure_message}}}'
   - remove:
-      field: ctx.cisco_ise.log.log_details_object.cisco-av-pair
+      field: cisco_ise.log.log_details_object.cisco-av-pair
       ignore_missing: true
   - script:
       lang: painless
